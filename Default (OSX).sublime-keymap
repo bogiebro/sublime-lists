@@ -1,6 +1,8 @@
 [
 	{ "keys": ["alt+enter"], "command": "list_continue" },
-	{ "keys": ["ctrl+i"], "command": "select_indent" },
+    { "keys": ["ctrl+r"], "command": "list_fix" },
     { "keys": ["alt+enter"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListBro.sublime-macro"}},
-    { "keys": ["alt+shift+enter"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListAunt.sublime-macro"}}
+    { "keys": ["super+alt+enter"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListAunt.sublime-macro"}},
+    { "keys": ["super+shift+up"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListUp.sublime-macro"}},
+    { "keys": ["super+shift+down"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListDown.sublime-macro"}}
 ]

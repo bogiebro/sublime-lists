@@ -1,0 +1,24 @@
+[
+	{
+		"args":
+		{
+			"by": "lines",
+			"forward": true
+		},
+		"command": "move"
+	},
+	{
+		"args":
+		{
+			"to": "indentation"
+		},
+		"command": "expand_selection"
+	},
+	{
+		"args":
+		{
+			"to": "hardeol"
+		},
+		"command": "move_to"
+	}
+]
