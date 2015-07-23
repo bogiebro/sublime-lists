@@ -28,31 +28,38 @@ class Changer:
             if m:
                 self.before = m.group(1)
                 return
+            m = re.match("^" + self.indent + "[^\s]", self.view.substr(self.pline))
+            if m:
+                self.before = ""
+                return
     def __iter__(self):
         return self
     def __next__(self):
-        self.editrow += 1
-        newline = self.view.line(self.view.text_point(self.editrow, 0))
-        if newline.a == self.line.a or not self.view.substr(newline).startswith(self.indent) or newline.empty():
-            raise StopIteration
-        self.line = newline
-        return self.view.substr(newline)
+        while True:
+            self.editrow += 1
+            newline = self.view.line(self.view.text_point(self.editrow, 0))
+            if newline.a == self.line.a or not self.view.substr(newline).startswith(self.indent) or newline.empty():
+                raise StopIteration
+            self.line = newline
+            m = re.match("^" + self.indent + "[^\s\d]*\d+[^\s]* +(.*)$", self.view.substr(newline))
+            if m and hasattr(self, 'x'):
+                self.x += 1
+                return m.group(1)
+            m = re.match("^" + self.indent + "[^\s\w]*[A-Za-z][^\s]* +(.*)$", self.view.substr(newline))
+            if m and hasattr(self, 'a'):
+                self.a += 1
+                return m.group(1)
+            m = re.match("^" + self.indent + "([^\s].*)$", self.view.substr(newline))
+            if m:
+                return m.group(1)
 
 def correctNum(ch, edit):
     for c in iter(ch):
-        m = re.match("^" + ch.indent + "[^\s\d]*\d+[^\s]* +(.*)$", c)
-        if not m:
-            continue
-        ch.x += 1
-        ch.view.replace(edit, ch.line, ch.indent + ch.before + str(ch.x) + ch.after + m.group(1))
+        ch.view.replace(edit, ch.line, ch.indent + ch.before + str(ch.x) + ch.after + c)
 
 def correctAlpha(ch, edit):
     for c in ch:
-        m = re.match("^" + ch.indent + "[^\s[A-Za-z]]*A-Za-z[^\s]* +(.*)$", c)
-        if not m:
-            continue
-        ch.a += 1
-        ch.view.replace(edit, ch.line, ch.indent + ch.before + chr(ch.a) + ch.after + m.group(1))
+        ch.view.replace(edit, ch.line, ch.indent + ch.before + chr(ch.a) + ch.after + c)
 
 class ListContinueCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -77,8 +84,6 @@ class ListFixCommand(sublime_plugin.TextCommand):
         elif hasattr(ch, 'a'):
             ch.a -= 1
             correctAlpha(ch, edit)
-        else:  
-            print("No attrs")
 
 class ListUpCommand(sublime_plugin.TextCommand):
     def run(self, edit):

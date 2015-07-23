@@ -1,4 +1,6 @@
-[ {"command": "insert", "args": {"characters": "\n"}},
+[
+  {"command": "move_to", "args":{"to": "hardeol"}},
+  {"command": "insert", "args": {"characters": "\n"}},
   {"command": "unindent"},
   {"command": "list_continue"}
 ]

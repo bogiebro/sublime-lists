@@ -1,3 +1,5 @@
-[ {"command": "insert", "args": {"characters": "\n"}},
-  {"command": "list_continue"}
+[
+    {"command": "move_to", "args":{"to": "hardeol"}},
+    {"command": "insert", "args": {"characters": "\n"}},
+    {"command": "list_continue"}
 ]
