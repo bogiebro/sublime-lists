@@ -30,7 +30,7 @@ def correctAlpha(self, edit, line, indent, a, before, after):
             continue
         self.view.replace(edit, newline, before + chr(a) + after + m.group(1))
 
-# returns indent, current line, x, a, before, after
+# returns indent, current line, parent line, x, a, before, after
 def findParent(self):
     line = self.view.line(self.view.sel()[0])
     m = re.match(r"^(\s*)", self.view.substr(line))
@@ -40,22 +40,22 @@ def findParent(self):
     while True:
         newline = self.view.line(self.view.text_point(row - 1, 0))
         if newline == prevline or not self.view.substr(newline).startswith(indent):
-            return indent, line, "", None, None, None
+            return indent, line, newline, "", None, None, None
         prevline = newline
         row -= 1
         m = re.match("^" + indent + "([^\s\d]*)(\d+)([^\s]* +)", self.view.substr(newline))
         if m:
-            return indent, line, m.group(1), int(m.group(2)) + 1, None, m.group(3)
+            return indent, line, newline, m.group(1), int(m.group(2)) + 1, None, m.group(3)
         m = re.match("^" + indent + "([^\s\w]*)([A-Za-z])([^\s]* +)", self.view.substr(newline))
         if m:
-            return indent, line, m.group(1), None, ord(m.group(2)) + 1, m.group(3)
+            return indent, line, newline, m.group(1), None, ord(m.group(2)) + 1, m.group(3)
         m = re.match("^" + indent + "([^\s\d]+ +)", self.view.substr(newline))
         if m:
-            return indent, line, m.group(1), None, None, None
+            return indent, line, newline, m.group(1), None, None, None
 
 class ListContinueCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        indent, line, before, x, a, after = findParent(self)
+        indent, line, _, before, x, a, after = findParent(self)
         if x:
             self.view.insert(edit, line.end(), before + str(x) + after)
             correctNum(self, edit, self.view.line(line), indent, x, before, after)
@@ -68,12 +68,20 @@ class ListContinueCommand(sublime_plugin.TextCommand):
 
 class ListFixCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        indent, line, before, x, a, after = findParent(self)
+        indent, line, _, before, x, a, after = findParent(self)
         row, _ = self.view.rowcol(line.end())
         newline = self.view.line(self.view.text_point(row - 1, 0))
         if x:
             correctNum(self, edit, newline, indent, x-1, before, after)
         elif a:
             correctAlpha(self, edit, newline, indent, a-1, before, after)
+
+class ListUpCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        print("got it")
+        _, _, newline, _, _, _, _ = findParent(self)
+        self.view.sel().clear()
+        self.view.sel().add(sublime.Region(newline.b, newline.b))
+
 
 
