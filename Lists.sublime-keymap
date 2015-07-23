@@ -1,4 +1,0 @@
-[
-	{ "keys": ["alt+enter"], "command": "list_item" },
-	{ "keys": ["ctrl+i"], "command": "select_indent" },
-]

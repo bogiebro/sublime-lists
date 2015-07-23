@@ -1,0 +1,6 @@
+[
+	{ "keys": ["alt+enter"], "command": "list_continue" },
+	{ "keys": ["ctrl+i"], "command": "select_indent" },
+    { "keys": ["alt+enter"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListBro.sublime-macro"}},
+    { "keys": ["alt+shift+enter"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListAunt.sublime-macro"}}
+]
