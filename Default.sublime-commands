@@ -2,5 +2,9 @@
 	{
 		"caption": "Continue List",
 		"command": "list_continue"
+	},
+	{
+		"caption": "Fix List",
+		"command": "list_fix"
 	}
 ]
