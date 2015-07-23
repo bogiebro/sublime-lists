@@ -1,0 +1,8 @@
+[
+	{ "keys": ["alt+enter"], "command": "list_continue" },
+    { "keys": ["ctrl+r"], "command": "list_fix" },
+    { "keys": ["super+shift+alt+up"], "command": "list_up" },
+    { "keys": ["super+shift+alt+down"], "command": "list_down" },
+    { "keys": ["alt+enter"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListBro.sublime-macro"}},
+    { "keys": ["super+alt+enter"], "command": "run_macro_file", "args": {"file": "Packages/Lists/ListAunt.sublime-macro"}}
+]
